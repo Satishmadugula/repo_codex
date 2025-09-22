@@ -8,4 +8,8 @@ __pycache__/
 venv/
 uploads/
 psp_uploads/
+# <<<<<<< codex/implement-ocr-and-risk-scoring-engine-n266pm
+node_modules/
+# =======
+# >>>>>>> main
 .DS_Store

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PSP AI Agent Console</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <h1>AI PSP Agent Command Centre</h1>
+        <p>
+          Drive OCR, risk analytics, compliance automation and proactive alerting for merchant onboarding using the FastAPI PSP
+          agent service.
+        </p>
+      </div>
+      <div class="hero__controls">
+        <label for="psp-api-base">PSP API base URL</label>
+        <input id="psp-api-base" name="psp-api-base" type="url" placeholder="http://localhost:8100" />
+        <small>Leave blank to use <code>http://localhost:8100</code>.</small>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" id="ocr-section">
+        <h2>OCR &amp; Document Intelligence</h2>
+        <form class="form-grid" id="ocr-form">
+          <h3>Process Document</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Document type<input type="text" name="document_type" placeholder="pan" required /></label>
+          <label>File<input type="file" name="file" accept="image/*,.pdf" required /></label>
+          <button type="submit">Run OCR</button>
+        </form>
+
+        <form class="form-grid" id="ocr-feedback-form">
+          <h3>Rejection Feedback</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Document type<input type="text" name="document_type" required /></label>
+          <label>Reason<textarea name="reason" rows="2" required></textarea></label>
+          <button type="submit">Submit Feedback</button>
+        </form>
+        <div class="result" id="ocr-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="risk-section">
+        <h2>Risk Scoring &amp; Fraud Detection</h2>
+        <form class="form-grid" id="risk-score-form">
+          <h3>Compute Risk Score</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Category<input type="text" name="category" placeholder="electronics" required /></label>
+          <label>Location<input type="text" name="location" placeholder="Mumbai" required /></label>
+          <label>Credit tier<select name="credit_score">
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="average">Average</option>
+              <option value="poor">Poor</option>
+            </select>
+          </label>
+          <label>Fraud flags (comma separated)<input type="text" name="fraud_flags" placeholder="watchlist_hit" /></label>
+          <button type="submit">Score Merchant</button>
+        </form>
+
+        <form class="form-grid" id="fraud-form">
+          <h3>Fraud &amp; Duplicate Check</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Business name<input type="text" name="business_name" required /></label>
+          <label>PAN<input type="text" name="pan" required /></label>
+          <button type="submit">Run Checks</button>
+        </form>
+
+        <button class="ghost" type="button" id="risk-dashboard-button">Load Risk Dashboard</button>
+        <div class="result" id="risk-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="compliance-section">
+        <h2>RBI Compliance Automation</h2>
+        <form class="form-grid" id="cpv-form">
+          <h3>Trigger CPV</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Address<textarea name="address" rows="2" required></textarea></label>
+          <button type="submit">Schedule CPV</button>
+        </form>
+
+        <form class="form-grid" id="ovd-form">
+          <h3>Verify OVD</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Document<input type="text" name="document_type" placeholder="passport" required /></label>
+          <label>Reference<input type="text" name="reference_number" required /></label>
+          <button type="submit">Verify</button>
+        </form>
+
+        <form class="form-grid" id="rekyc-form">
+          <h3>Log re-KYC Completion</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Completed at<input type="datetime-local" name="completed_at" required /></label>
+          <button type="submit">Record</button>
+        </form>
+
+        <button class="ghost" type="button" id="compliance-updates-button">Compliance Updates</button>
+        <div class="result" id="compliance-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="onboarding-section">
+        <h2>Field Ops &amp; Case Summaries</h2>
+        <form class="form-grid" id="assign-field-form">
+          <h3>Assign Field Verification</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Location<input type="text" name="location" required /></label>
+          <button type="submit">Assign Task</button>
+        </form>
+
+        <form class="form-grid" id="orchestrate-form">
+          <h3>Orchestrate Onboarding</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <button type="submit">Generate Plan</button>
+        </form>
+
+        <form class="form-grid" id="summary-form">
+          <h3>Create Case Summary</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Risk level<select name="risk_level">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+          <label>Highlights<textarea name="highlights" rows="3" placeholder="List bullet points separated by new lines" required></textarea></label>
+          <button type="submit">Summarise</button>
+        </form>
+        <div class="result" id="onboarding-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="alerts-section">
+        <h2>Alerts &amp; Monitoring</h2>
+        <form class="form-grid" id="merchant-alert-form">
+          <h3>Notify Merchant</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Channel<select name="channel">
+              <option value="email">Email</option>
+              <option value="sms">SMS</option>
+              <option value="whatsapp">WhatsApp</option>
+            </select>
+          </label>
+          <label>Message<textarea name="message" rows="2" required></textarea></label>
+          <button type="submit">Send Alert</button>
+        </form>
+
+        <form class="form-grid" id="internal-alert-form">
+          <h3>Flag Internal Team</h3>
+          <label>Message<textarea name="message" rows="2" required></textarea></label>
+          <label>Severity<select name="severity">
+              <option value="info">Info</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+          <button type="submit">Raise Alert</button>
+        </form>
+
+        <form class="form-grid" id="anomaly-form">
+          <h3>Anomaly Detection</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Transaction amount<input type="number" name="transaction_amount" step="0.01" required /></label>
+          <button type="submit">Analyse</button>
+        </form>
+
+        <div class="ops-grid">
+          <button class="ghost" type="button" id="ops-cases-button">Ops Case Snapshot</button>
+          <button class="ghost" type="button" id="ops-analytics-button">Ops Analytics</button>
+        </div>
+        <div class="result" id="alerts-result" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Need to experience the merchant view? Visit the
+        <a href="../merchant_portal_ui/index.html">merchant onboarding workspace</a>.
+      </p>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

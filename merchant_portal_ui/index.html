@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merchant Onboarding Experience</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <h1>Merchant Onboarding Portal</h1>
+        <p>
+          Test the end-to-end merchant onboarding APIs with a responsive UI that mirrors
+          the account, KYC, banking, onboarding assistance and support flows.
+        </p>
+      </div>
+      <div class="hero__controls">
+        <label for="merchant-api-base">Merchant API base URL</label>
+        <input
+          id="merchant-api-base"
+          name="merchant-api-base"
+          type="url"
+          placeholder="http://localhost:8000"
+        />
+        <small>Leave blank to use <code>http://localhost:8000</code>.</small>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" id="account-section">
+        <h2>Account Creation &amp; Secure Access</h2>
+        <form class="form-grid" id="signup-form">
+          <h3>Request OTP</h3>
+          <label>Email<input type="email" name="email" required /></label>
+          <label>Phone<input type="tel" name="phone_number" required /></label>
+          <label>
+            Preferred language
+            <select name="preferred_language">
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="ta">Tamil</option>
+              <option value="bn">Bengali</option>
+            </select>
+          </label>
+          <button type="submit">Send OTP</button>
+        </form>
+
+        <form class="form-grid" id="otp-form">
+          <h3>Verify OTP</h3>
+          <label>Email<input type="email" name="email" required /></label>
+          <label>OTP<input type="text" name="otp" required /></label>
+          <button type="submit">Verify</button>
+        </form>
+
+        <form class="form-grid" id="device-form">
+          <h3>Register Device</h3>
+          <label>Email<input type="email" name="email" required /></label>
+          <label>Device fingerprint<input type="text" name="device_fingerprint" required /></label>
+          <label>MFA token<input type="text" name="mfa_token" /></label>
+          <button type="submit">Register</button>
+        </form>
+        <div class="result" id="account-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="kyc-section">
+        <h2>KYC Submission &amp; Tracking</h2>
+        <form class="form-grid" id="checklist-form">
+          <h3>Generate Checklist</h3>
+          <label>
+            Entity type
+            <select name="entity_type">
+              <option value="sole_proprietor">Sole Proprietor</option>
+              <option value="private_limited">Private Limited</option>
+              <option value="partnership">Partnership</option>
+            </select>
+          </label>
+          <button type="submit">Fetch Checklist</button>
+        </form>
+
+        <form class="form-grid" id="kyc-upload-form">
+          <h3>Upload Document</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Document type<input type="text" name="document_type" placeholder="pan" required /></label>
+          <label>File<input type="file" name="file" accept="image/*,.pdf" required /></label>
+          <button type="submit">Upload</button>
+        </form>
+
+        <form class="form-grid" id="kyc-status-form">
+          <h3>Document Status</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <button type="submit">Check Status</button>
+        </form>
+        <div class="result" id="kyc-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="banking-section">
+        <h2>Bank &amp; Business Verification</h2>
+        <form class="form-grid" id="bank-verify-form">
+          <h3>Start Bank Verification</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Account number<input type="text" name="account_number" required /></label>
+          <label>IFSC<input type="text" name="ifsc" required /></label>
+          <button type="submit">Verify</button>
+        </form>
+
+        <form class="form-grid" id="business-verify-form">
+          <h3>Business Verification</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>PAN<input type="text" name="pan" /></label>
+          <label>GSTIN<input type="text" name="gstin" /></label>
+          <label>Website<input type="url" name="website_url" /></label>
+          <button type="submit">Submit</button>
+        </form>
+        <div class="result" id="banking-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="onboarding-section">
+        <h2>Onboarding Progress &amp; Assistance</h2>
+        <form class="form-grid" id="progress-form">
+          <h3>Track Progress</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <button type="submit">View Progress</button>
+        </form>
+
+        <form class="form-grid" id="checklist-update-form">
+          <h3>Update Checklist</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Checklist item<input type="text" name="item" placeholder="kyc_submitted" required /></label>
+          <label class="checkbox">
+            <input type="checkbox" name="completed" /> Mark completed
+          </label>
+          <button type="submit">Update</button>
+        </form>
+
+        <form class="form-grid" id="assistance-form">
+          <h3>Request Assisted Onboarding</h3>
+          <label>Email<input type="email" name="merchant_email" required /></label>
+          <label>Mode<select name="assistance_mode">
+              <option value="field_visit">Field Visit</option>
+              <option value="call_center">Call Centre</option>
+              <option value="kiosk">Kiosk</option>
+            </select>
+          </label>
+          <label>Preferred time<input type="text" name="preferred_time" placeholder="Tomorrow 2pm" /></label>
+          <label>Location<input type="text" name="location" placeholder="City / Pincode" /></label>
+          <button type="submit">Request</button>
+        </form>
+
+        <button class="ghost" id="nudges-button" type="button">Generate Nudges</button>
+        <div class="result" id="onboarding-result" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" id="support-section">
+        <h2>Transparency &amp; Support</h2>
+        <div class="support-grid">
+          <form class="form-grid" id="faq-form">
+            <h3>Load FAQs</h3>
+            <button type="submit">Fetch FAQs</button>
+          </form>
+
+          <form class="form-grid" id="ticket-form">
+            <h3>Raise Support Ticket</h3>
+            <label>Email<input type="email" name="merchant_email" required /></label>
+            <label>Language<select name="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="ta">Tamil</option>
+                <option value="bn">Bengali</option>
+              </select>
+            </label>
+            <label>Question<textarea name="question" rows="3" required></textarea></label>
+            <button type="submit">Submit Ticket</button>
+          </form>
+
+          <form class="form-grid" id="chat-start-form">
+            <h3>Start AI Chat</h3>
+            <label>Email<input type="email" name="merchant_email" required /></label>
+            <label>Language<select name="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="ta">Tamil</option>
+                <option value="bn">Bengali</option>
+              </select>
+            </label>
+            <button type="submit">Start Session</button>
+          </form>
+
+          <form class="form-grid" id="chat-message-form">
+            <h3>Send Chat Message</h3>
+            <label>Session ID<input type="text" name="session_id" required /></label>
+            <label>Message<textarea name="content" rows="2" required></textarea></label>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+        <div class="result" id="support-result" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Need the PSP perspective too? Explore the <a href="../psp_ai_agent_ui/index.html">AI/PSP agent console</a>.
+      </p>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

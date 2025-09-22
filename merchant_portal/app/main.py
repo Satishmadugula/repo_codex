@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
 from .routers import account, banking, kyc, onboarding, support
 
@@ -7,6 +7,14 @@ from .routers import account, banking, kyc, onboarding, support
 def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(title=settings.app_name)
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.allowed_origins,
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     app.include_router(account.router)
     app.include_router(kyc.router)

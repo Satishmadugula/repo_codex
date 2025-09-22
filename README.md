@@ -5,7 +5,12 @@ This repository contains two FastAPI-based backends that implement the merchant 
 ## Repository Structure
 
 - `merchant_portal/` – Merchant-facing APIs that power account creation, KYC submission, verification, assisted onboarding, and multilingual support needs.
+
+- `merchant_portal_ui/` – Responsive single-page workspace for merchants to exercise the onboarding APIs without a framework build step.
 - `psp_ai_agent/` – PSP representative (AI agent) APIs that automate OCR, risk scoring, compliance, fraud detection, case triage, and proactive alerts.
+- `psp_ai_agent_ui/` – Console for PSP teams to run OCR, risk, compliance and alerting journeys against the AI agent service.
+
+
 
 Each project is self-contained with its own FastAPI app, dependency modules, and service layers.
 
@@ -33,6 +38,23 @@ uvicorn app.main:app --reload --port 8000
 - `app/services/account_service.py` – Handles OTP, MFA, and fraud detection heuristics.
 - `app/services/kyc_service.py` – Manages entity checklists, uploads, and document feedback.
 - `app/services/onboarding_service.py` – Tracks progress, schedules assistance, and generates nudges.
+
+
+### Merchant Portal UI
+
+- Location: `merchant_portal_ui/`
+- Stack: vanilla HTML, CSS and JavaScript – no bundler required.
+- Capabilities: exercises account creation, OTP verification, device registration, KYC checklist/upload, banking verification, onboarding progress, assisted onboarding and support chat flows.
+
+To serve the UI locally without additional dependencies:
+
+```bash
+cd merchant_portal_ui
+python -m http.server 4200
+```
+
+Then open <http://localhost:4200> and point the "Merchant API base URL" field at your running FastAPI instance (defaults to `http://localhost:8000`).
+
 
 ## PSP AI Agent Service
 
@@ -62,6 +84,22 @@ Ensure `ollama serve` is running with the configured vision-capable model (e.g. 
 - `app/services/risk_service.py` – Comprehensive risk engine with underwriting recommendations.
 - `app/services/alert_service.py` – Merchant nudges, internal ops alerts, and anomaly management.
 
+
+### PSP AI Agent UI
+
+- Location: `psp_ai_agent_ui/`
+- Stack: vanilla HTML, CSS and JavaScript.
+- Capabilities: file-based OCR via Ollama, risk scoring, fraud checks, compliance automation, onboarding orchestration, alerting and ops analytics dashboards.
+
+Serve the console with any static file host (e.g. Python http server):
+
+```bash
+cd psp_ai_agent_ui
+python -m http.server 4300
+```
+
+Navigate to <http://localhost:4300> and ensure the "PSP API base URL" matches the running PSP FastAPI instance (defaults to `http://localhost:8100`).
+
 ## Environment Variables
 
 | Service | Variable | Description |
@@ -69,11 +107,16 @@ Ensure `ollama serve` is running with the configured vision-capable model (e.g. 
 | Merchant Portal | `MERCHANT_MONGODB_URI` | MongoDB connection string |
 | Merchant Portal | `MERCHANT_DB_NAME` | Optional override for database name |
 | Merchant Portal | `MERCHANT_APP_NAME` | Custom FastAPI title |
+
+| Merchant Portal | `MERCHANT_ALLOWED_ORIGINS` | JSON array of allowed origins for CORS (default `[*]`) |
+
 | PSP AI Agent | `PSP_MONGODB_URI` | MongoDB connection string |
 | PSP AI Agent | `PSP_DB_NAME` | Optional override for database name |
 | PSP AI Agent | `PSP_APP_NAME` | Custom FastAPI title |
 | PSP AI Agent | `OLLAMA_BASE_URL` | URL where `ollama serve` is reachable |
 | PSP AI Agent | `OLLAMA_OCR_MODEL` | Ollama model to use for OCR (default `llava`) |
+
+| PSP AI Agent | `PSP_ALLOWED_ORIGINS` | JSON array of allowed origins for CORS (default `[*]`) |
 
 ## Development Notes
 
@@ -82,6 +125,9 @@ Ensure `ollama serve` is running with the configured vision-capable model (e.g. 
 - Risk scoring combines merchant category, geography, and credit history with fraud signals to derive dynamic transaction policies.
 - Compliance helpers keep CPV/OVD audit logs and ensure re-KYC cycles remain compliant with RBI guidelines.
 - Alerting services centralise merchant and internal notifications to support proactive onboarding assistance.
+
+- Configure CORS for the UIs by exporting `MERCHANT_ALLOWED_ORIGINS` / `PSP_ALLOWED_ORIGINS` as JSON lists, e.g. `MERCHANT_ALLOWED_ORIGINS='["http://localhost:4200"]'`.
+
 
 ## Running Tests
 
