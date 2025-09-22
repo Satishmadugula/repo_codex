@@ -10,7 +10,9 @@ class Settings(BaseSettings):
     database_name: str = Field("merchant_portal", env="MERCHANT_DB_NAME")
     otp_expiry_seconds: int = Field(300, env="MERCHANT_OTP_EXPIRY")
     supported_languages: list[str] = Field(default_factory=lambda: ["en", "hi", "ta", "bn"])
+
     allowed_origins: list[str] = Field(default_factory=lambda: ["*"])
+
 
     class Config:
         env_file = ".env"

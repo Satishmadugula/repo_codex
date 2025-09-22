@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     ollama_base_url: str = Field("http://localhost:11434", env="OLLAMA_BASE_URL")
     ocr_model: str = Field("llava", env="OLLAMA_OCR_MODEL")
     allowed_origins: list[str] = Field(default_factory=lambda: ["*"])
-
+      
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
